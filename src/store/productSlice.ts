@@ -35,7 +35,7 @@ const productSlice = createSlice({
     openCreateModal: (state, action: PayloadAction<boolean | number>) => {
       if (typeof action.payload === "boolean") {
         state.createModalState = action.payload;
-      } else if (typeof action.payload === "number") {
+      } else if (typeof action.payload === "string") {
         const product = state.products.find(
           (element) => element.id === action.payload
         );

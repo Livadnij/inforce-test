@@ -1,0 +1,124 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "imageUrl": "https://picsum.photos/500",
+      "name": "Grape",
+      "count": 12,
+      "size": {
+        "width": 200,
+        "height": 200
+      },
+      "weight": "200g",
+      "comments": ["CommentModel", "CommentModel"]
+    },
+    {
+      "id": 2,
+      "imageUrl": "https://picsum.photos/500",
+      "name": "Kiwi",
+      "count": 15,
+      "size": {
+        "width": 200,
+        "height": 200
+      },
+      "weight": "100g",
+      "comments": ["CommentModel", "CommentModel"]
+    },
+    {
+      "id": 3,
+      "imageUrl": "https://picsum.photos/500",
+      "name": "Apple",
+      "count": 4,
+      "size": {
+        "width": 200,
+        "height": 200
+      },
+      "weight": "200g",
+      "comments": ["CommentModel", "CommentModel"]
+    },
+    {
+      "id": 4,
+      "imageUrl": "https://picsum.photos/500",
+      "name": "Date",
+      "count": 7,
+      "size": {
+        "width": 200,
+        "height": 200
+      },
+      "weight": "150g",
+      "comments": ["CommentModel", "CommentModel"]
+    },
+    {
+      "id": 5,
+      "imageUrl": "https://picsum.photos/500",
+      "name": "Banana",
+      "count": 5,
+      "size": {
+        "width": 200,
+        "height": 200
+      },
+      "weight": "180g",
+      "comments": ["CommentModel", "CommentModel"]
+    },
+    {
+      "id": 6,
+      "imageUrl": "https://picsum.photos/500",
+      "name": "Lemon",
+      "count": 9,
+      "size": {
+        "width": 200,
+        "height": 200
+      },
+      "weight": "200g",
+      "comments": ["CommentModel", "CommentModel"]
+    },
+    {
+      "id": 7,
+      "imageUrl": "https://picsum.photos/500",
+      "name": "Honeydew",
+      "count": 6,
+      "size": {
+        "width": 200,
+        "height": 200
+      },
+      "weight": "300g",
+      "comments": ["CommentModel", "CommentModel"]
+    },
+    {
+      "id": 8,
+      "imageUrl": "https://picsum.photos/500",
+      "name": "Fig",
+      "count": 8,
+      "size": {
+        "width": 200,
+        "height": 200
+      },
+      "weight": "250g",
+      "comments": ["CommentModel", "CommentModel"]
+    },
+    {
+      "id": 9,
+      "imageUrl": "https://picsum.photos/500",
+      "name": "Elderberry",
+      "count": 3,
+      "size": {
+        "width": 200,
+        "height": 200
+      },
+      "weight": "120g",
+      "comments": ["CommentModel", "CommentModel"]
+    },
+    {
+      "id": 10,
+      "imageUrl": "https://picsum.photos/500",
+      "name": "Cherry",
+      "count": 10,
+      "size": {
+        "width": 200,
+        "height": 200
+      },
+      "weight": "50g",
+      "comments": ["CommentModel", "CommentModel"]
+    }
+  ]
+}

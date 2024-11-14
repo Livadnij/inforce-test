@@ -3,7 +3,11 @@ import { Modal, TextField, Typography, Button } from "@mui/material";
 import { Box } from "@mui/system";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store";
-import { editProductsArray, openCreateModal } from "../store/productSlice";
+import {
+  editProductsArray,
+  openCreateModal,
+  setCurrentProduct,
+} from "../store/productSlice";
 import { ProductInterface } from "../types";
 
 const style = {
@@ -41,6 +45,15 @@ export default function ProductCreateModal() {
     return Number(currentBiggestId.id) + 1;
   }
 
+  const getNextCommentId = (products: ProductInterface[]): number => {
+    const allComments = products.flatMap((product) => product.comments);
+    if (allComments.length === 0) {
+      return 1;
+    }
+    const maxId = Math.max(...allComments.map((comment) => comment.id));
+    return maxId + 1;
+  };
+
   const [product, setProduct] = useState<ProductInterface>({
     id: currentProduct?.id ?? -1,
     imageUrl: currentProduct?.imageUrl ?? "https://picsum.photos/500",
@@ -58,7 +71,6 @@ export default function ProductCreateModal() {
   }, [currentProduct]);
 
   const handleClose = () => {
-    dispatch(openCreateModal(false));
     setProduct({
       id: -1,
       imageUrl: "https://picsum.photos/500",
@@ -68,6 +80,8 @@ export default function ProductCreateModal() {
       weight: "",
       comments: [],
     });
+    dispatch(openCreateModal(false));
+    dispatch(setCurrentProduct(null));
   };
 
   const handleChange = (
@@ -84,7 +98,6 @@ export default function ProductCreateModal() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    console.log(name, value);
     setProduct((prevProduct) => ({
       ...prevProduct,
       size: {
@@ -99,26 +112,43 @@ export default function ProductCreateModal() {
     index: number
   ) => {
     const updatedComments = [...product.comments];
-    updatedComments[index] = e.target.value;
+    updatedComments[index].description = e.target.value;
+    updatedComments[index].date = new Date().toISOString();
     setProduct((prevProduct) => ({
       ...prevProduct,
       comments: updatedComments,
     }));
   };
 
+  const handleAddNewComment = () => {
+    setProduct((prevProduct) => ({
+      ...prevProduct,
+      comments: [
+        ...prevProduct.comments,
+        {
+          id: getNextCommentId(getAllProducts),
+          productId: prevProduct.id
+            ? prevProduct.id
+            : getNextId(getAllProducts),
+          description: "",
+          date: new Date().toISOString(),
+        },
+      ],
+    }));
+  };
+
   const handleSubmit = () => {
     if (Number(product.id) > -1) {
       dispatch(editProductsArray(product));
-      dispatch(openCreateModal(false));
+      handleClose();
     } else {
       const newId = getNextId(getAllProducts);
       const newProduct = {
         ...product,
         id: newId,
       };
-      console.log(newProduct);
       dispatch(editProductsArray(newProduct));
-      dispatch(openCreateModal(false));
+      handleClose();
     }
   };
 
@@ -185,13 +215,24 @@ export default function ProductCreateModal() {
           onChange={handleChange}
           fullWidth
         />
+        <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+          <Typography>Comments</Typography>{" "}
+          <Button
+            onClick={() => {
+              handleAddNewComment();
+            }}
+            size="small"
+            variant="contained"
+          >
+            +
+          </Button>
+        </Box>
 
-        <Typography>Comments</Typography>
         {product.comments.map((comment, index) => (
           <TextField
-            key={index}
-            name={`comment-${index}`}
-            value={comment}
+            key={comment.id}
+            name={`comment-${comment.id}`}
+            value={comment.description}
             onChange={(e) => handleCommentChange(e, index)}
             placeholder="Comment"
             fullWidth

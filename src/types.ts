@@ -3,6 +3,13 @@ export interface SizeInterface {
   height: number;
 }
 
+export interface CommentsInterface {
+  id: number;
+  productId: number | string;
+  description: string;
+  date: string;
+}
+
 export interface ProductInterface {
   id: number | string;
   imageUrl: string;
@@ -10,7 +17,7 @@ export interface ProductInterface {
   count: number;
   size: SizeInterface;
   weight: string;
-  comments: string[];
+  comments: CommentsInterface[];
 }
 
 export interface ProductStateInterface {

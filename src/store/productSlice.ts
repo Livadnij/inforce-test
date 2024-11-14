@@ -9,7 +9,6 @@ export const fetchProducts = createAsyncThunk<ProductInterface[]>(
     if (!response.ok) {
       throw new Error("Failed to fetch products");
     }
-    console.log(await response);
     return (await response.json()) as ProductInterface[];
   }
 );
@@ -63,7 +62,6 @@ const productSlice = createSlice({
       const changeElementID = state.products.findIndex(
         (obj) => obj.id === action.payload.id
       );
-      console.log(changeElementID, action.payload);
       if (changeElementID !== -1) {
         state.products[changeElementID] = action.payload;
       } else {

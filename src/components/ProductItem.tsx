@@ -51,8 +51,8 @@ const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
               Comments :
             </Typography>
             <ul>
-              {product.comments.map((comment, index) => (
-                <li key={index}>{comment}</li>
+              {product.comments.map((comment) => (
+                <li key={comment.id}>{comment.description}</li>
               ))}
             </ul>
           </Box>

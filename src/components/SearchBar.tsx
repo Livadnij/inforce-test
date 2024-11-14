@@ -12,11 +12,11 @@ interface SearchBarInterbace {
   filterProductsByName: (searchName: string) => void;
 }
 
-export default function SearchBar({
+const SearchBar: React.FC<SearchBarInterbace> = ({
   sortProductsByCount,
   sortProductsByName,
   filterProductsByName,
-}: SearchBarInterbace) {
+}) => {
   const dispatch = useDispatch();
   const [searchName, setSearchName] = useState("");
 
@@ -57,4 +57,6 @@ export default function SearchBar({
       </Button>
     </Box>
   );
-}
+};
+
+export default SearchBar;

@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -6,11 +7,16 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useDispatch, useSelector } from "react-redux";
+
 import { AppDispatch, RootState } from "../store";
 import { deleteProduct, openDeleteDialog } from "../store/productSlice";
 
-export default function ProductDeleteDialog() {
+const ProductDeleteDialog: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+
+  const openState = useSelector(
+    (state: RootState) => state.products.deleteDialogStatus
+  );
 
   const handleClose = () => {
     dispatch(openDeleteDialog(false));
@@ -23,12 +29,7 @@ export default function ProductDeleteDialog() {
 
   return (
     <React.Fragment>
-      <Dialog
-        open={useSelector(
-          (state: RootState) => state.products.deleteDialogStatus
-        )}
-        onClose={handleClose}
-      >
+      <Dialog open={openState} onClose={handleClose}>
         <DialogTitle>Delete Product.</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -44,4 +45,6 @@ export default function ProductDeleteDialog() {
       </Dialog>
     </React.Fragment>
   );
-}
+};
+
+export default ProductDeleteDialog;

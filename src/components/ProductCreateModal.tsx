@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Modal, TextField, Typography, Button } from "@mui/material";
-import { Box } from "@mui/system";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../store";
+
+import { Modal, TextField, Typography, Button, Box } from "@mui/material";
+
 import {
   editProductsArray,
   openCreateModal,
   setCurrentProduct,
 } from "../store/productSlice";
 import { ProductInterface } from "../types";
+import { useProductModal } from "./hooks/useModalStore";
 
 const style = {
   position: "absolute",
@@ -25,34 +25,9 @@ const style = {
   flexDirection: "column",
 };
 
-export default function ProductCreateModal() {
-  const dispatch = useDispatch<AppDispatch>();
-  const currentProduct = useSelector(
-    (state: RootState) => state.products.currentProduct
-  );
-  const createModalState = useSelector(
-    (state: RootState) => state.products.createModalState
-  );
-  const getAllProducts: ProductInterface[] = useSelector(
-    (state: RootState) => state.products.products
-  );
-
-  function getNextId(objects: ProductInterface[]): number {
-    const currentBiggestId = objects.reduce(
-      (max, obj) => (Number(obj.id) > Number(max.id) ? obj : max),
-      objects[0]
-    );
-    return Number(currentBiggestId.id) + 1;
-  }
-
-  const getNextCommentId = (products: ProductInterface[]): number => {
-    const allComments = products.flatMap((product) => product.comments);
-    if (allComments.length === 0) {
-      return 1;
-    }
-    const maxId = Math.max(...allComments.map((comment) => comment.id));
-    return maxId + 1;
-  };
+const ProductCreateModal: React.FC = () => {
+  const { dispatch, currentProduct, createModalState, getAllProducts } =
+    useProductModal();
 
   const [product, setProduct] = useState<ProductInterface>({
     id: currentProduct?.id ?? -1,
@@ -70,18 +45,21 @@ export default function ProductCreateModal() {
     }
   }, [currentProduct]);
 
-  const handleClose = () => {
-    setProduct({
-      id: -1,
-      imageUrl: "https://picsum.photos/500",
-      name: "",
-      count: 0,
-      size: { width: 0, height: 0 },
-      weight: "",
-      comments: [],
-    });
-    dispatch(openCreateModal(false));
-    dispatch(setCurrentProduct(null));
+  const getNextId = (objects: ProductInterface[]): number => {
+    const currentBiggestId = objects.reduce(
+      (max, obj) => (Number(obj.id) > Number(max.id) ? obj : max),
+      objects[0]
+    );
+    return Number(currentBiggestId.id) + 1;
+  };
+
+  const getNextCommentId = (products: ProductInterface[]): number => {
+    const allComments = products.flatMap((product) => product.comments);
+    if (allComments.length === 0) {
+      return 1;
+    }
+    const maxId = Math.max(...allComments.map((comment) => comment.id));
+    return maxId + 1;
   };
 
   const handleChange = (
@@ -135,6 +113,20 @@ export default function ProductCreateModal() {
         },
       ],
     }));
+  };
+
+  const handleClose = () => {
+    setProduct({
+      id: -1,
+      imageUrl: "https://picsum.photos/500",
+      name: "",
+      count: 0,
+      size: { width: 0, height: 0 },
+      weight: "",
+      comments: [],
+    });
+    dispatch(openCreateModal(false));
+    dispatch(setCurrentProduct(null));
   };
 
   const handleSubmit = () => {
@@ -245,4 +237,6 @@ export default function ProductCreateModal() {
       </Box>
     </Modal>
   );
-}
+};
+
+export default ProductCreateModal;

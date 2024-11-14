@@ -1,20 +1,30 @@
 import React from "react";
+
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../store";
+import { Button, Typography, Box } from "@mui/material";
+
 import { selectProductBySlug } from "../store/productSlice";
-import { Box } from "@mui/system";
-import { Button, Typography } from "@mui/material";
 import {
   openCreateModal,
   openDeleteDialog,
   setCurrentProduct,
 } from "../store/productSlice";
+import { CommentsInterface } from "../types";
 
-export default function ProductDetails() {
+const ProductDetails: React.FC = () => {
   const dispatch = useDispatch();
   const { slug } = useParams<{ slug: string }>();
   const product = useSelector(selectProductBySlug(slug || ""));
+
+  const onEditProduct = () => {
+    dispatch(openCreateModal(product.id));
+  };
+
+  const onDeleteProduct = () => {
+    dispatch(setCurrentProduct(product));
+    dispatch(openDeleteDialog(true));
+  };
 
   return product ? (
     <Box>
@@ -27,6 +37,12 @@ export default function ProductDetails() {
           Product Weight : {product.weight}
         </Typography>
         <Typography variant="body1" gutterBottom>
+          Size:
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          Width: {product.size.width}, Height:{product.size.height}
+        </Typography>
+        <Typography variant="body1" gutterBottom>
           Count: {product.count}
         </Typography>
         <Box>
@@ -34,31 +50,20 @@ export default function ProductDetails() {
             Comments :
           </Typography>
           <ul>
-            {product.comments.map((comment: string, index: number) => (
-              <li key={index}>{comment}</li>
+            {product.comments.map((comment: CommentsInterface) => (
+              <li key={comment.id}>{comment.description}</li>
             ))}
           </ul>
         </Box>
       </Box>
       <Box>
-        <Button
-          onClick={() => {
-            dispatch(openCreateModal(product.id));
-          }}
-        >
-          Edit
-        </Button>
-        <Button
-          onClick={() => {
-            dispatch(setCurrentProduct(product));
-            dispatch(openDeleteDialog(true));
-          }}
-        >
-          Delete
-        </Button>
+        <Button onClick={onEditProduct}>Edit</Button>
+        <Button onClick={onDeleteProduct}>Delete</Button>
       </Box>
     </Box>
   ) : (
     <Typography>Cant find correct product</Typography>
   );
-}
+};
+
+export default ProductDetails;

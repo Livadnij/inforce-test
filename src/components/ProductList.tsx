@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import ProductItem from "./ProductItem";
+
 import { Typography, Box, LinearProgress } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
+import Grid from "@mui/material/Grid2";
+
 import { fetchProducts } from "../store/productSlice";
 import { RootState, AppDispatch } from "../store";
 import { ProductInterface } from "../types";
-import Grid from "@mui/material/Grid2";
 import SearchBar from "./SearchBar";
+import ProductItem from "./ProductItem";
 
-export default function ProductList() {
+const ProductList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { products, loading, error } = useSelector(
     (state: RootState) => state.products
@@ -17,6 +19,10 @@ export default function ProductList() {
     ProductInterface[] | null
   >(null);
 
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
   const sortProductsByName = () => {
     if (!products) return;
     const sortedProducts = [...products].sort((a, b) =>
@@ -24,6 +30,10 @@ export default function ProductList() {
     );
     setProductsSorted(sortedProducts);
   };
+
+  useEffect(() => {
+    sortProductsByName();
+  }, [products]);
 
   const sortProductsByCount = () => {
     if (!products) return;
@@ -38,14 +48,6 @@ export default function ProductList() {
     );
     setProductsSorted(filterdProducts);
   };
-
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
-
-  useEffect(() => {
-    sortProductsByName();
-  }, [products]);
 
   return (
     <Box>
@@ -75,4 +77,6 @@ export default function ProductList() {
       </Box>
     </Box>
   );
-}
+};
+
+export default ProductList;

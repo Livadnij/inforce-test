@@ -39,8 +39,6 @@ export default function ProductList() {
     setProductsSorted(filterdProducts);
   };
 
-  //when filtered elements do not sort
-
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);

@@ -1,6 +1,10 @@
+import React, { useState } from "react";
+
+import { useDispatch } from "react-redux";
 import { Button, MenuItem, Select, TextField } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useState } from "react";
+
+import { openCreateModal } from "../store/productSlice";
 
 interface SearchBarInterbace {
   sortProductsByName: () => void;
@@ -13,7 +17,12 @@ export default function SearchBar({
   sortProductsByName,
   filterProductsByName,
 }: SearchBarInterbace) {
+  const dispatch = useDispatch();
   const [searchName, setSearchName] = useState("");
+
+  const handleOpenCreateModal = () => {
+    dispatch(openCreateModal(true));
+  };
 
   return (
     <Box>
@@ -38,6 +47,14 @@ export default function SearchBar({
           <Button onClick={sortProductsByCount}>Sort By Count</Button>
         </MenuItem>
       </Select>
+      <Button
+        onClick={() => {
+          handleOpenCreateModal();
+        }}
+        variant="contained"
+      >
+        Add Product
+      </Button>
     </Box>
   );
 }

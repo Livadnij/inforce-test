@@ -9,6 +9,7 @@ export const fetchProducts = createAsyncThunk<ProductInterface[]>(
     if (!response.ok) {
       throw new Error("Failed to fetch products");
     }
+    console.log(await response);
     return (await response.json()) as ProductInterface[];
   }
 );
@@ -32,10 +33,16 @@ const productSlice = createSlice({
     ) => {
       state.currentProduct = action.payload;
     },
-    openCreateModal: (state, action: PayloadAction<boolean | number>) => {
+    openCreateModal: (
+      state,
+      action: PayloadAction<boolean | number | string>
+    ) => {
       if (typeof action.payload === "boolean") {
         state.createModalState = action.payload;
-      } else if (typeof action.payload === "string") {
+      } else if (
+        typeof action.payload === "string" ||
+        typeof action.payload === "number"
+      ) {
         const product = state.products.find(
           (element) => element.id === action.payload
         );
@@ -56,10 +63,11 @@ const productSlice = createSlice({
       const changeElementID = state.products.findIndex(
         (obj) => obj.id === action.payload.id
       );
-      if (changeElementID) {
+      console.log(changeElementID, action.payload);
+      if (changeElementID !== -1) {
         state.products[changeElementID] = action.payload;
       } else {
-        state.products[action.payload.id] = action.payload;
+        state.products.push(action.payload);
       }
     },
   },

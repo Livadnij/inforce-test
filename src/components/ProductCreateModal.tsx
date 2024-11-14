@@ -35,15 +35,15 @@ export default function ProductCreateModal() {
 
   function getNextId(objects: ProductInterface[]): number {
     const currentBiggestId = objects.reduce(
-      (max, obj) => (obj.id > max.id ? obj : max),
+      (max, obj) => (Number(obj.id) > Number(max.id) ? obj : max),
       objects[0]
     );
-    return currentBiggestId.id + 1;
+    return Number(currentBiggestId.id) + 1;
   }
 
   const [product, setProduct] = useState<ProductInterface>({
     id: currentProduct?.id ?? -1,
-    imageUrl: currentProduct?.imageUrl ?? "",
+    imageUrl: currentProduct?.imageUrl ?? "https://picsum.photos/500",
     name: currentProduct?.name ?? "",
     count: currentProduct?.count ?? 0,
     size: currentProduct?.size ?? { width: 0, height: 0 },
@@ -61,7 +61,7 @@ export default function ProductCreateModal() {
     dispatch(openCreateModal(false));
     setProduct({
       id: -1,
-      imageUrl: "",
+      imageUrl: "https://picsum.photos/500",
       name: "",
       count: 0,
       size: { width: 0, height: 0 },
@@ -80,6 +80,20 @@ export default function ProductCreateModal() {
     }));
   };
 
+  const handleSizeChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    console.log(name, value);
+    setProduct((prevProduct) => ({
+      ...prevProduct,
+      size: {
+        ...prevProduct.size,
+        [name]: Number(value),
+      },
+    }));
+  };
+
   const handleCommentChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     index: number
@@ -93,7 +107,7 @@ export default function ProductCreateModal() {
   };
 
   const handleSubmit = () => {
-    if (product.id > -1) {
+    if (Number(product.id) > -1) {
       dispatch(editProductsArray(product));
       dispatch(openCreateModal(false));
     } else {
@@ -102,6 +116,7 @@ export default function ProductCreateModal() {
         ...product,
         id: newId,
       };
+      console.log(newProduct);
       dispatch(editProductsArray(newProduct));
       dispatch(openCreateModal(false));
     }
@@ -138,18 +153,18 @@ export default function ProductCreateModal() {
 
         <Box sx={{ display: "flex", gap: 2 }}>
           <TextField
-            name="size.width"
+            name="width"
             label="Size width"
             value={product.size.width}
-            onChange={handleChange}
+            onChange={handleSizeChange}
             type="number"
             fullWidth
           />
           <TextField
-            name="size.height"
+            name="height"
             label="Size height"
             value={product.size.height}
-            onChange={handleChange}
+            onChange={handleSizeChange}
             type="number"
             fullWidth
           />

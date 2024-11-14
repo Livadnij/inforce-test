@@ -32,10 +32,19 @@ const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
         </Link>
         <Box>
           <Typography variant="body1" gutterBottom>
+            ID : {product.id}
+          </Typography>
+          <Typography variant="body1" gutterBottom>
             Product Weight : {product.weight}
           </Typography>
           <Typography variant="body1" gutterBottom>
             Count: {product.count}
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Size:
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Width: {product.size.width}, Height:{product.size.height}
           </Typography>
           <Box>
             <Typography variant="body1" gutterBottom>
